@@ -2,6 +2,7 @@ import "reflect-metadata";
 import express, { Express, Request, Response } from "express";
 import { AppDataSource } from "./database/data-source";
 import routes from "./routes";
+import { errorHandler } from "./middlewares/errorHandler";
 
 // Criando a instancia do Express
 const app = express();
@@ -25,6 +26,9 @@ app.use("/api/v1", routes);
 app.use((_: unknown, res: Response) =>
   res.status(404).json({ error: "Rota não encontrada" }),
 );
+
+// middleware de tratramento de erros
+app.use(errorHandler);
 
 // Conecta ao banco de dados e só depois Inicia o servidor
 AppDataSource.initialize()
