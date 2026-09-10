@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { AutenticacaoController } from "../controllers/AutenticacaoController";
 
 /*
@@ -10,8 +10,10 @@ const autenticacaoRoutes = Router();
 const autenticacaoController = new AutenticacaoController();
 
 // Rotas de itens especificos
-autenticacaoRoutes.post("/registrar", (req: Request, res: Response) =>
-  autenticacaoController.registrar(req, res),
+autenticacaoRoutes.post(
+  "/registrar",
+  (req: Request, res: Response, next: NextFunction) =>
+    autenticacaoController.registrar(req, res, next),
 );
 
 export default autenticacaoRoutes;
