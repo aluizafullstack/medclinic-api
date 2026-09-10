@@ -1,9 +1,14 @@
+import "reflect-metadata";
 import express, { Express, Request, Response } from "express";
 import { AppDataSource } from "./database/data-source";
+import routes from "./routes";
 
 // Criando a instancia do Express
 const app = express();
 const PORT = 3000;
+
+// Middleware global -> permite que o Express leia JSON no corpo da requisição
+app.use(express.json());
 
 // Rota de health-check -> Veificando se aplicação está ok
 app.get("/health-check", (req: Request, res: Response) => {
@@ -12,6 +17,9 @@ app.get("/health-check", (req: Request, res: Response) => {
     timeStamp: new Date().toISOString(),
   });
 });
+
+// Rotas da API, prefixadas com /api/v1
+app.use("/api/v1", routes);
 
 // Rota desconhecida -> 404
 app.use((_: unknown, res: Response) =>
