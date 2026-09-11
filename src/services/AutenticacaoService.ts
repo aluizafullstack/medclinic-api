@@ -2,6 +2,7 @@ import { UsuarioRepository } from "../repositories/UsuarioRepository";
 import { IUsuarioRepository } from "../repositories/IUsuarioRepository";
 import { RegistrarUsuarioDto } from "../dtos/RegistrarUsuarioDto";
 import { AppError } from "../errors/AppError";
+import { gerarHashSenha } from "../utils/senhaHash";
 
 /*
     Esse AutenticacaoService é responsável pelas regras de negócio
@@ -30,7 +31,14 @@ export class AutenticacaoService {
       throw new AppError("E-mail já cadastrado", 409);
     }
 
-    const usuario = await this.usuarioRepository.create({ nome, email, senha });
+    // Gera o hash da senha -> nunca salva a senha em texto puro.
+    const senhaCriptografada = await gerarHashSenha(senha);
+
+    const usuario = await this.usuarioRepository.create({
+      nome,
+      email,
+      senha: senhaCriptografada,
+    });
 
     return {
       id: usuario.id,
