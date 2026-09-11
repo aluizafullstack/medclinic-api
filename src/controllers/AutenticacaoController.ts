@@ -22,4 +22,13 @@ export class AutenticacaoController {
       next(error);
     }
   }
+
+  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const resultado = await this.autenticacaoService.login(req.body);
+      res.status(200).json(resultado);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

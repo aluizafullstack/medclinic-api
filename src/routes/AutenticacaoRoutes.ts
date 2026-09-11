@@ -16,4 +16,8 @@ autenticacaoRoutes.post(
     autenticacaoController.registrar(req, res, next),
 );
 
+autenticacaoRoutes.post("/login", (req, res, next) =>
+  autenticacaoController.login(req, res, next),
+);
+
 export default autenticacaoRoutes;
